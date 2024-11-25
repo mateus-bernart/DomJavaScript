@@ -85,6 +85,11 @@ const contagemRegressiva = () => {
     if (confirm("Tempo finalizado")) {
       fimAudio.pause();
     }
+    const focoAtivo = html.getAttribute("data-contexto") === "foco";
+    if (focoAtivo) {
+      const evento = new CustomEvent("FocoFinalizado");
+      document.dispatchEvent(evento);
+    }
     return;
   }
   tempoDecorridoEmSegundos -= 1;
@@ -109,7 +114,7 @@ function iniciarOuPausar() {
 
 function zerar() {
   clearInterval(intervaloId);
-  iniciarOuPausarBt.textContent = `Começar`;
+  // iniciarOuPausarBt.textContent = `Começar`;
 
   intervaloId = null;
 }
