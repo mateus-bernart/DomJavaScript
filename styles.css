@@ -393,6 +393,7 @@ h6 {
 }
 
 .app_button-edit,
+.app_button-delete,
 .app_button-more {
   border: none;
   cursor: pointer;

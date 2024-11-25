@@ -45,6 +45,9 @@ function criarElementoTarefa(tarefa) {
   paragrafo.classList.add("app__section-task-list-item-description");
   paragrafo.textContent = tarefa.descricao;
 
+  const botaoExcluir = document.createElement("button");
+  botaoExcluir.classList.add("app_button-delete");
+
   const botao = document.createElement("button");
   botao.classList.add("app_button-edit");
 
@@ -63,12 +66,17 @@ function criarElementoTarefa(tarefa) {
   const imagemBotao = document.createElement("img");
   imagemBotao.setAttribute("src", "/imagens/edit.png");
 
+  const imagemBotaoDelete = document.createElement("img");
+  imagemBotaoDelete.setAttribute("src", "/imagens/trash.svg");
+
+  botaoExcluir.append(imagemBotaoDelete);
   botao.append(imagemBotao);
-  li.append(svg, paragrafo, botao);
+  li.append(svg, paragrafo, botao, botaoExcluir);
 
   if (tarefa.completa) {
     li.classList.add("app__section-task-list-item-complete");
     botao.setAttribute("disabled", true);
+    botaoExcluir.setAttribute("disabled", true);
   } else {
     li.onclick = () => {
       document
@@ -87,6 +95,15 @@ function criarElementoTarefa(tarefa) {
       paragrafoDescricaoTarefa.textContent = tarefa.descricao;
 
       li.classList.add("app__section-task-list-item-active");
+
+      botaoExcluir.onclick = () => {
+        const index = tarefas.indexOf(tarefa);
+        if (index !== -1) {
+          tarefas.splice(index, 1);
+          li.remove();
+          atualizarTarefas();
+        }
+      };
     };
   }
 
@@ -103,11 +120,14 @@ formAdicionarTarefa.addEventListener("submit", (event) => {
     descricao: textArea.value,
   };
   tarefas.push(tarefa);
+
   const elementoTarefa = criarElementoTarefa(tarefa);
-  atualizarTarefas();
+
   ulTarefa.append(elementoTarefa);
+
   textArea.value = "";
   formAdicionarTarefa.classList.add("hidden");
+  atualizarTarefas();
 });
 
 tarefas.forEach((tarefa) => {
